@@ -1,3 +1,3 @@
-#AseismicGPDemo.jl
+# AseismicGPDemo.jl
 
 A suite of demos for AseismicGP.jl. Run them all by executing run_demo.sh. Requires obspy & numpy on Python 3 if you want to run the data download script (demo data is already included), and Julia 1.6+ (Julia packages should automatically install by instantiating the Project.toml file). The demos will take quite a while! Set the number of threads for julia (good values would be divisors of the number of MCMC chains, which by default are 1,2,3,6) via the environment value in run_demo.sh
