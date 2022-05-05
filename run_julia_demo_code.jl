@@ -1,5 +1,5 @@
 import Pkg
-Pkg.Registry.add(url="https://github.com/jbmuir/JBMuirJuliaRegistry")
+Pkg.Registry.add(RegistrySpec(url = "https://github.com/jbmuir/JBMuirJuliaRegistry.git"))
 Pkg.activate(".")
 Pkg.instantiate()
 
