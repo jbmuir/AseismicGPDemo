@@ -1,4 +1,5 @@
 import Pkg
+Pkg.Registry.add("https://github.com/jbmuir/JBMuirJuliaRegistry.jl")
 Pkg.activate(".")
 Pkg.instantiate()
 
