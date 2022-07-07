@@ -87,13 +87,13 @@ quantities = generated_quantities(etasm, etasc_params)
 μl = hcat([q[2] for q in quantities]...)
 
 
-m05 = [quantile(μi, 0.15) for μi in eachrow(μ)]
+m05 = [quantile(μi, 0.05) for μi in eachrow(μ)]
 m25 = [quantile(μi, 0.25) for μi in eachrow(μ)]
 m50 = [quantile(μi, 0.50) for μi in eachrow(μ)]
 m75 = [quantile(μi, 0.75) for μi in eachrow(μ)]
 m95 = [quantile(μi, 0.95) for μi in eachrow(μ)]
 
-m05l = [quantile(μi, 0.15) for μi in eachrow(μl)]
+m05l = [quantile(μi, 0.05) for μi in eachrow(μl)]
 m25l = [quantile(μi, 0.25) for μi in eachrow(μl)]
 m50l = [quantile(μi, 0.50) for μi in eachrow(μl)]
 m75l = [quantile(μi, 0.75) for μi in eachrow(μl)]
