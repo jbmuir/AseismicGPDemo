@@ -83,7 +83,7 @@ for (model_label, model) in zip(["zero", "one", "two"], [crpt, olrp, tlrp])
     Plots.plot(etasc[50_001:10:end], lw=2)
     savefig("Figures/chainplot_ridgecrest_$(model_label).pdf")
 
-    m05 = [quantile(μi, 0.15) for μi in eachrow(μ)]
+    m05 = [quantile(μi, 0.05) for μi in eachrow(μ)]
     m25 = [quantile(μi, 0.25) for μi in eachrow(μ)]
     m50 = [quantile(μi, 0.50) for μi in eachrow(μ)]
     m75 = [quantile(μi, 0.75) for μi in eachrow(μ)]
