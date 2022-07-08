@@ -94,6 +94,8 @@ for (model_label, model) in zip(["zero", "one", "two"], [crpt, olrp, tlrp])
 
     ax1 = Axis(f[1, 1], xlabel="Sequence Day", ylabel="Rate (Day⁻¹)")
     ax2 = Axis(f[1, 1], yaxisposition = :right, ylabel="Magnitude")
+    CairoMakie.xlims!(ax1, [0,cahuilla_elapsed_time])
+    CairoMakie.xlims!(ax2, [0,cahuilla_elapsed_time])
     hidedecorations!(ax1, ticks=false, ticklabels=false, label=false)
     hidexdecorations!(ax2)
     hideydecorations!(ax2, ticks=false, ticklabels=false, label=false)
