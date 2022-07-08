@@ -102,6 +102,7 @@ m95l = [quantile(μi, 0.95) for μi in eachrow(μl)]
 f = Figure()
 
 ax0 = Axis(f[1,1], ylabel="Lengthscale (Day)")
+CairoMakie.xlims!(ax0, [0,tspan])
 hidexdecorations!(ax0)
 hideydecorations!(ax0, ticks=false, ticklabels=false, label=false)
 band!(ax0,0:model.M.h:tspan, m05l, m95l, color = (:blue, 0.35))
@@ -112,6 +113,8 @@ axislegend(ax0, [rml], ["Posterior l"], nothing, position = :rt)
 
 ax1 = Axis(f[2, 1], xlabel="Sequence Day", ylabel="Rate (Day⁻¹)")
 ax2 = Axis(f[2, 1], yaxisposition = :right, ylabel="Magnitude")
+CairoMakie.xlims!(ax1, [0,tspan])
+CairoMakie.xlims!(ax2, [0,tspan])
 hidedecorations!(ax1, ticks=false, ticklabels=false, label=false)
 hidexdecorations!(ax2)
 hideydecorations!(ax2, ticks=false, ticklabels=false, label=false)
