@@ -119,7 +119,7 @@ hidedecorations!(ax1, ticks=false, ticklabels=false, label=false)
 hidexdecorations!(ax2)
 hideydecorations!(ax2, ticks=false, ticklabels=false, label=false)
 
-ev = scatter!(ax2, catalog.t, catalog.M, color = (:black, 0.25))
+ev = CairoMakie.scatter!(ax2, catalog.t, catalog.M, color = (:black, 0.25))
 band!(ax1,0:model.M.h:tspan, m05, m95, color = (:blue, 0.35))
 band!(ax1,0:model.M.h:tspan, m25, m75, color = (:blue, 0.35))
 rmu = lines!(ax1,0:model.M.h:tspan, m50, color=:blue, linewidth=2)
