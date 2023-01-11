@@ -97,7 +97,7 @@ for (cat_label,catalog, fun) in zip(["const", "gauss", "square"], [cat_const, ca
         Plots.plot(etasc[50_001:10:end], lw=2)
         savefig("Figures/chainplot_$(cat_label)_$(model_label).pdf")
 
-        m05 = [quantile(μi, 0.15) for μi in eachrow(μ)]
+        m05 = [quantile(μi, 0.05) for μi in eachrow(μ)]
         m25 = [quantile(μi, 0.25) for μi in eachrow(μ)]
         m50 = [quantile(μi, 0.50) for μi in eachrow(μ)]
         m75 = [quantile(μi, 0.75) for μi in eachrow(μ)]
@@ -107,6 +107,8 @@ for (cat_label,catalog, fun) in zip(["const", "gauss", "square"], [cat_const, ca
 
         ax1 = Axis(f[1, 1], xlabel="Sequence Day", ylabel="Rate (Day⁻¹)")
         ax2 = Axis(f[1, 1], yaxisposition = :right, ylabel="Magnitude")
+        CairoMakie.xlims!(ax1, [0,tspan])
+        CairoMakie.xlims!(ax2, [0,tspan])
         hidedecorations!(ax1, ticks=false, ticklabels=false, label=false)
         hidexdecorations!(ax2)
         hideydecorations!(ax2, ticks=false, ticklabels=false, label=false)

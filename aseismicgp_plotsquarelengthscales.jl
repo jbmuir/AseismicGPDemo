@@ -87,13 +87,13 @@ quantities = generated_quantities(etasm, etasc_params)
 μl = hcat([q[2] for q in quantities]...)
 
 
-m05 = [quantile(μi, 0.15) for μi in eachrow(μ)]
+m05 = [quantile(μi, 0.05) for μi in eachrow(μ)]
 m25 = [quantile(μi, 0.25) for μi in eachrow(μ)]
 m50 = [quantile(μi, 0.50) for μi in eachrow(μ)]
 m75 = [quantile(μi, 0.75) for μi in eachrow(μ)]
 m95 = [quantile(μi, 0.95) for μi in eachrow(μ)]
 
-m05l = [quantile(μi, 0.15) for μi in eachrow(μl)]
+m05l = [quantile(μi, 0.05) for μi in eachrow(μl)]
 m25l = [quantile(μi, 0.25) for μi in eachrow(μl)]
 m50l = [quantile(μi, 0.50) for μi in eachrow(μl)]
 m75l = [quantile(μi, 0.75) for μi in eachrow(μl)]
@@ -102,6 +102,7 @@ m95l = [quantile(μi, 0.95) for μi in eachrow(μl)]
 f = Figure()
 
 ax0 = Axis(f[1,1], ylabel="Lengthscale (Day)")
+CairoMakie.xlims!(ax0, [0,tspan])
 hidexdecorations!(ax0)
 hideydecorations!(ax0, ticks=false, ticklabels=false, label=false)
 band!(ax0,0:model.M.h:tspan, m05l, m95l, color = (:blue, 0.35))
@@ -112,11 +113,13 @@ axislegend(ax0, [rml], ["Posterior l"], nothing, position = :rt)
 
 ax1 = Axis(f[2, 1], xlabel="Sequence Day", ylabel="Rate (Day⁻¹)")
 ax2 = Axis(f[2, 1], yaxisposition = :right, ylabel="Magnitude")
+CairoMakie.xlims!(ax1, [0,tspan])
+CairoMakie.xlims!(ax2, [0,tspan])
 hidedecorations!(ax1, ticks=false, ticklabels=false, label=false)
 hidexdecorations!(ax2)
 hideydecorations!(ax2, ticks=false, ticklabels=false, label=false)
 
-ev = scatter!(ax2, catalog.t, catalog.M, color = (:black, 0.25))
+ev = CairoMakie.scatter!(ax2, catalog.t, catalog.M, color = (:black, 0.25))
 band!(ax1,0:model.M.h:tspan, m05, m95, color = (:blue, 0.35))
 band!(ax1,0:model.M.h:tspan, m25, m75, color = (:blue, 0.35))
 rmu = lines!(ax1,0:model.M.h:tspan, m50, color=:blue, linewidth=2)
