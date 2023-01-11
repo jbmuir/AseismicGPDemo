@@ -62,13 +62,11 @@ spde1priors2 = ScalarSPDELayerPriors(Uniform(5,10), Uniform(5,10), truncated(Nor
 spde2priors2 = VectorSPDELayerPriors(truncated(Gamma(μa, μθ),0,0.03), truncated(Normal(0,1),0,Inf))
 tlrp = TwoLayerRateParameters(ridgecrest_elapsed_time, N, spde1priors2, spde2priors2, etaspriors)
 
-# for (model_label, model) in zip(["zero", "one", "two"], [crpt, olrp, tlrp])
-#     etasm, etasc = etas_sampling(100_000, 6, ridgecrest_catalog, model, threads=true)
-#     jldsave("Outputs/ridgecrest_$(model_label).jld2"; etasm, etasc)
-# end
-for (model_label, model) in zip(["zero"], [crpt])
+
+for (model_label, model) in zip(["zero", "one", "two"], [crpt, olrp, tlrp])
     Random.seed!(43771120)
-    etasm, etasc = etas_sampling(100_000, 6, ridgecrest_catalog, model, threads=true)
+    println("Running Ridgecrest $model_label")
+    @time etasm, etasc = etas_sampling(100_000, 6, ridgecrest_catalog, model, threads=true)
     jldsave("Outputs/ridgecrest_$(model_label).jld2"; etasm, etasc)
 end
 #

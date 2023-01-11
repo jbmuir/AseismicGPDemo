@@ -8,16 +8,16 @@ using Random
 using JLD2
 using Dates
 
-caihulla_data = reverse(readdlm("Data/cahuilla_data.txt"), dims=1)
-caihulla_min_mag = 1.71 #SCSN completeness magnitude estimate
-caihulla_elapsed_time = 1460.0 #days
-caihulla_start_date = DateTime(2016,1,1)
-caihulla_start_time = 735964.0 #obspy.matplotlib_date
-caihulla_catalog = Catalog(caihulla_data[:,1].-caihulla_start_time,
-                           caihulla_data[:,2],
-                           caihulla_min_mag,
-                           caihulla_start_date,
-                           caihulla_elapsed_time)
+cahuilla_data = reverse(readdlm("Data/cahuilla_data.txt"), dims=1)
+cahuilla_min_mag = 1.71 #SCSN completeness magnitude estimate
+cahuilla_elapsed_time = 1460.0 #days
+cahuilla_start_date = DateTime(2016,1,1)
+cahuilla_start_time = 16801.0 #obspy.matplotlib_date
+cahuilla_catalog = Catalog(cahuilla_data[:,1].-cahuilla_start_time,
+                           cahuilla_data[:,2],
+                           cahuilla_min_mag,
+                           cahuilla_start_date,
+                           cahuilla_elapsed_time)
 
 
 function gamma_moment_tuner(μ, σ)
@@ -54,16 +54,17 @@ etaspriors = ETASPriors(truncated(Normal(0,0.25),0,0.5),
                         InverseGamma(ca, cb), 
                         InverseGamma(p̃a, p̃b))				
 
-crpt = ConstantRateParameters(caihulla_elapsed_time, μa, μb, etaspriors) 
+crpt = ConstantRateParameters(cahuilla_elapsed_time, μa, μb, etaspriors) 
 spde1priors = ScalarSPDELayerPriors(Gamma(μa, μθ), Uniform(150, 250), truncated(Normal(0,1),0,Inf))
-olrp = OneLayerRateParameters(caihulla_elapsed_time, N, spde1priors, etaspriors)
+olrp = OneLayerRateParameters(cahuilla_elapsed_time, N, spde1priors, etaspriors)
 spde1priors2 = ScalarSPDELayerPriors(Uniform(50,150), Uniform(150,250), truncated(Normal(0,1),0,Inf))
 spde2priors2 = VectorSPDELayerPriors(truncated(Gamma(μa, μθ),0,0.02), truncated(Normal(0,1),0,Inf))
-tlrp = TwoLayerRateParameters(caihulla_elapsed_time, N, spde1priors2, spde2priors2, etaspriors)
+tlrp = TwoLayerRateParameters(cahuilla_elapsed_time, N, spde1priors2, spde2priors2, etaspriors)
 
 for (model_label, model) in zip(["zero", "one", "two"], [crpt, olrp, tlrp])
     Random.seed!(43771120)
-    etasm, etasc = etas_sampling(100_000, 6, caihulla_catalog, model, threads=true)
+    println("Running cahuilla $model_label")
+    @time etasm, etasc = etas_sampling(100_000, 6, cahuilla_catalog, model, threads=true)
     jldsave("Outputs/cahuilla_$(model_label).jld2"; etasm, etasc)
 end
 #

@@ -73,7 +73,8 @@ for (cat_label,catatalog, f) in zip(["const", "gauss", "square"], [cat_const, ca
 
     for (model_label, model) in zip(["zero", "one", "two"], [crpt, olrp, tlrp])
         Random.seed!(43771120)
-        etasm, etasc = etas_sampling(100_000, 6, catatalog, model, threads=true)
+        println("Running synthetic $cat_label $model_label")
+        @time etasm, etasc = etas_sampling(100_000, 6, catatalog, model, threads=true)
         jldsave("Outputs/$(cat_label)_$(model_label).jld2"; etasm, etasc)
     end
 end                   

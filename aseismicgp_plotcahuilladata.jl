@@ -23,6 +23,7 @@ cahuilla_catalog = Catalog(cahuilla_data[:,1].-cahuilla_start_time,
                            cahuilla_start_date,
                            cahuilla_elapsed_time)
 
+smooth_rate = smooth_catalog_rate(cahuilla_catalog)
 
 function gamma_moment_tuner(μ, σ)
     # gives parameters for a Gamma with given mean and standard deviation
@@ -110,7 +111,9 @@ for (model_label, model) in zip(["zero", "one", "two"], [crpt, olrp, tlrp])
         rmu = lines!(ax1,0:model.M.h:cahuilla_elapsed_time, m50, color=:blue, linewidth=2)
     end
 
-    axislegend(ax1, [ev, rmu], ["Events", "Posterior μ"], nothing, position = :rt)
+    sr = lines!(ax1, cahuilla_catalog.t, smooth_rate, color = :black)
+
+    axislegend(ax1, [ev, rmu, sr], ["Events", "Posterior μ", "Smoothed Total Rate"], nothing, position = :rt)
 
     save("Figures/muplot_cahuilla_$(model_label).pdf", f)
 end
