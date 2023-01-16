@@ -62,19 +62,19 @@ etaspriors = ETASPriors(truncated(Normal(0,Ktrue),0,2*Ktrue),
                         InverseGamma(ca, cb), 
                         InverseGamma(p̃a, p̃b))				
 
-for (cat_label,catatalog, f) in zip(["const", "gauss", "square"], [cat_const, cat_gauss, cat_square], [f_const, f_gauss, f_square])
-    μa, μb, μθ = gamma_moment_tuner(length(catatalog)/tspan, length(catatalog)/tspan/2)
+for (cat_label,catalog, f) in zip(["const", "gauss", "square"], [cat_const, cat_gauss, cat_square], [f_const, f_gauss, f_square])
+    μa, μb, μθ = gamma_moment_tuner(length(catalog)/tspan, length(catalog)/tspan/2)
     crpt = ConstantRateParameters(tspan, μa, μb, etaspriors) 
-    spde1priors = ScalarSPDELayerPriors(Gamma(μa, μθ), Uniform(150, 250), truncated(Normal(0,1),0,Inf))
+    spde1priors = ScalarSPDELayerPriors(Gamma(μa, μθ), Uniform(10, 300), truncated(Normal(0,1),0,Inf))
     olrp = OneLayerRateParameters(tspan, N, spde1priors, etaspriors)
-    spde1priors2 = ScalarSPDELayerPriors(Uniform(50,150), Uniform(150,250), truncated(Normal(0,1),0,Inf))
-    spde2priors2 = VectorSPDELayerPriors(truncated(Gamma(μa, μθ),0,2*length(catatalog)/tspan), truncated(Normal(0,1),0,Inf))
+    spde1priors2 = ScalarSPDELayerPriors(Uniform(10,200), Uniform(100,300), truncated(Normal(0,1),0,Inf))
+    spde2priors2 = VectorSPDELayerPriors(truncated(Gamma(μa, μθ),0,2*length(catalog)/tspan), truncated(Normal(0,1),0,Inf))
     tlrp = TwoLayerRateParameters(tspan, N, spde1priors2, spde2priors2, etaspriors)
 
     for (model_label, model) in zip(["zero", "one", "two"], [crpt, olrp, tlrp])
         Random.seed!(43771120)
         println("Running synthetic $cat_label $model_label")
-        @time etasm, etasc = etas_sampling(100_000, 6, catatalog, model, threads=true)
+        @time etasm, etasc = etas_sampling(100_000, 6, catalog, model, threads=true)
         jldsave("Outputs/$(cat_label)_$(model_label).jld2"; etasm, etasc)
     end
 end                   

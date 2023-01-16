@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export JULIA_THREADS=6
+export JULIA_THREADS=8
 
 mkdir Figures
 mkdir Outputs
